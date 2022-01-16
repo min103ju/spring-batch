@@ -11,10 +11,13 @@ import org.springframework.batch.repeat.RepeatStatus;
 @Slf4j
 public class BatchTasklet implements Tasklet {
 
+    private static int TASKLET_EXECUTE_COUNT = 0;
+
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
         throws Exception {
-            log.info("execute tasklet!!");
+
+            log.info("execute tasklet!! TASKLET_EXECUTE_COUNT : {}", ++TASKLET_EXECUTE_COUNT);
         return RepeatStatus.FINISHED;
     }
 }
