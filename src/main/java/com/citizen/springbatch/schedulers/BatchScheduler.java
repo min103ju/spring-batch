@@ -18,8 +18,8 @@ public class BatchScheduler {
     private final Job job; // BatchJob Bean이 주입된다.
     private final JobLauncher jobLauncher;
 
-    // 5초 마다 실행(ms 단위)
-    @Scheduled(fixedDelay = 1 * 1_000L)
+    // 1시간 마다 실행(ms 단위)
+    @Scheduled(fixedDelay = 3600 * 1_000L)
     public void executeJob() {
         try {
             jobLauncher.run(

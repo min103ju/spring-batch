@@ -36,6 +36,7 @@ public class BatchConfig {
     // StepBuilderFactory를 통해 Step 생성
     // public으로 생성
     @Bean
+    //@JobScope를 잊으면 안된다.
     @JobScope
     public Step batchStep(@Value("#{jobParameters[requestDate]}") String requestDate) {
         return stepBuilderFactory.get(STEP_NAME)
