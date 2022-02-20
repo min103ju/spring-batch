@@ -44,7 +44,9 @@ public class BatchConfig {
         return stepBuilderFactory.get(STEP1_NAME)
             // Tasklet은 Step 안에서 단일로 수행될 커스텀한 기능들을 선언할 때 사용
             .tasklet((contribution, chunkContext) -> {
-                throw new IllegalArgumentException("Step1에서 실패");
+                log.info(">>>> This is step 1.");
+                log.info(">>>>requestDate : {}", requestDate);
+                return RepeatStatus.FINISHED;
             })
             .build();
     }
