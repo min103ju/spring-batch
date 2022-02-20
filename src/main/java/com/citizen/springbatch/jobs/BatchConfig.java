@@ -19,7 +19,8 @@ import org.springframework.context.annotation.Configuration;
 public class BatchConfig {
 
     private final String JOB_NAME = "batchJob";
-    private final String STEP_NAME = "batchStep";
+    private final String STEP1_NAME = "batchStep1";
+    private final String STEP2_NAME = "batchStep2";
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -29,7 +30,8 @@ public class BatchConfig {
     @Bean
     public Job batchJob() {
         return jobBuilderFactory.get(JOB_NAME)
-            .start(batchStep(null))
+            .start(batchStep1(null))
+            .next(batchStep2(null))
             .build();
     }
 
@@ -38,10 +40,20 @@ public class BatchConfig {
     @Bean
     //@JobScope를 잊으면 안된다.
     @JobScope
-    public Step batchStep(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        return stepBuilderFactory.get(STEP_NAME)
+    public Step batchStep1(@Value("#{jobParameters[requestDate]}") String requestDate) {
+        return stepBuilderFactory.get(STEP1_NAME)
             // Tasklet은 Step 안에서 단일로 수행될 커스텀한 기능들을 선언할 때 사용
             .tasklet((contribution, chunkContext) -> {
+                throw new IllegalArgumentException("Step1에서 실패");
+            })
+            .build();
+    }
+
+    @JobScope
+    public Step batchStep2(@Value("#{jobParameters[requestDate]}") String requestDate) {
+        return stepBuilderFactory.get(STEP2_NAME)
+            .tasklet((contribution, chunkContext) -> {
+                log.info(">>>> This is step 2.");
                 log.info(">>>>requestDate : {}", requestDate);
                 return RepeatStatus.FINISHED;
             })
