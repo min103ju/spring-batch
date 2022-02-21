@@ -51,6 +51,7 @@ public class BatchConfig {
             .build();
     }
 
+    @Bean
     @JobScope
     public Step batchStep2(@Value("#{jobParameters[requestDate]}") String requestDate) {
         return stepBuilderFactory.get(STEP2_NAME)
