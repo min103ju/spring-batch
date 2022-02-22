@@ -1,5 +1,7 @@
 package com.citizen.springbatch.jobs;
 
+import static com.citizen.springbatch.jobs.StepScopeWarningConfiguration.JOB_NAME;
+
 import com.citizen.springbatch.domain.Post;
 import com.citizen.springbatch.tasklet.PostItemProcessor;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,11 +26,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "job.name", havingValue = JOB_NAME)
 @Configuration
 public class StepScopeWarningConfiguration {
 
-    private final String JOB_NAME = "stepScopeWarningJob";
-    private final String STEP_NAME = "stepScopeWarningStep";
+    public static final String JOB_NAME = "stepScopeWarningJob";
+    private static final String STEP_NAME = "stepScopeWarningStep";
 
     private final EntityManagerFactory entityManagerFactory;
     private final JobBuilderFactory jobBuilderFactory;
