@@ -29,9 +29,9 @@ public class StepScopeWarningConfiguration {
     private final String JOB_NAME = "stepScopeWarningJob";
     private final String STEP_NAME = "stepScopeWarningStep";
 
-    private EntityManagerFactory entityManagerFactory;
-    private JobBuilderFactory jobBuilderFactory;
-    private StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory entityManagerFactory;
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
     public Job job() {
@@ -55,7 +55,7 @@ public class StepScopeWarningConfiguration {
         String sql = "SELECT p FROM Post p WHERE p.title=:title";
 
         HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("post1", "testPost");
+        paramMap.put("title", "testPost");
 
         JpaPagingItemReader<Post> reader = new JpaPagingItemReader<>();
         reader.setEntityManagerFactory(entityManagerFactory);
