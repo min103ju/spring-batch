@@ -10,12 +10,13 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,19 +47,20 @@ public class StepScopeWarningConfiguration {
     public Step step() {
         return stepBuilderFactory.get(STEP_NAME)
             .<Post, Post>chunk(1)
-            .reader(reader())
+            .reader(reader(null))
             .processor(processor())
             .writer(writer())
             .build();
     }
 
     @Bean
-    public ItemReader<Post> reader() {
+    @StepScope
+    public JpaPagingItemReader<Post> reader(@Value("#{jobParameters[title]}") String title) {
 
         String sql = "SELECT p FROM Post p WHERE p.title=:title";
 
         HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("title", "testPost");
+        paramMap.put("title", title);
 
         JpaPagingItemReader<Post> reader = new JpaPagingItemReader<>();
         reader.setEntityManagerFactory(entityManagerFactory);

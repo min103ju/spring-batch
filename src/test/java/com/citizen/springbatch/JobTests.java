@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,13 @@ public class JobTests {
 
     @Test
     public void Step_Scope_Warning_테스트() throws Exception {
+        // given
+        JobParameters jobParameters = new JobParametersBuilder()
+            .addString("title", "testPost1")
+            .toJobParameters();
+
         // when
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
 
         // then
         assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
