@@ -1,7 +1,5 @@
 package com.citizen.springbatch.jobs;
 
-import static com.citizen.springbatch.jobs.StepScopeWarningConfiguration.JOB_NAME;
-
 import com.citizen.springbatch.domain.Post;
 import com.citizen.springbatch.tasklet.PostItemProcessor;
 import java.util.HashMap;
@@ -12,12 +10,12 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,12 +24,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "job.name", havingValue = JOB_NAME)
 @Configuration
 public class StepScopeWarningConfiguration {
 
-    public static final String JOB_NAME = "stepScopeWarningJob";
-    private static final String STEP_NAME = "stepScopeWarningStep";
+    private final String JOB_NAME = "stepScopeWarningJob";
+    private final String STEP_NAME = "stepScopeWarningStep";
 
     private final EntityManagerFactory entityManagerFactory;
     private final JobBuilderFactory jobBuilderFactory;
@@ -40,6 +37,7 @@ public class StepScopeWarningConfiguration {
     @Bean
     public Job job() {
         return jobBuilderFactory.get(JOB_NAME)
+            .incrementer(new RunIdIncrementer())
             .start(step())
             .build();
     }
@@ -54,7 +52,8 @@ public class StepScopeWarningConfiguration {
             .build();
     }
 
-    private ItemReader<Post> reader() {
+    @Bean
+    public ItemReader<Post> reader() {
 
         String sql = "SELECT p FROM Post p WHERE p.title=:title";
 
@@ -70,11 +69,13 @@ public class StepScopeWarningConfiguration {
         return reader;
     }
 
-    private ItemProcessor<Post, Post> processor() {
+    @Bean
+    public ItemProcessor<Post, Post> processor() {
         return new PostItemProcessor();
     }
 
-    private ItemWriter<Post> writer() {
+    @Bean
+    public ItemWriter<Post> writer() {
         JpaItemWriter<Post> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
         return writer;
