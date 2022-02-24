@@ -48,6 +48,7 @@ public class EntityContextConfiguration {
         JpaPagingItemReader<PurchaseOrder> reader = new JpaPagingItemReader<>();
         reader.setQueryString("select o from PurchaseOrder o");
         reader.setEntityManagerFactory(entityManagerFactory);
+        reader.setPageSize(100);
 
         return reader;
     }
