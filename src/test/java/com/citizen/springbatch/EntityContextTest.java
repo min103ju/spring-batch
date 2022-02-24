@@ -8,7 +8,7 @@ import com.citizen.springbatch.domain.PurchaseOrder;
 import com.citizen.springbatch.jobs.EntityContextConfiguration;
 import com.citizen.springbatch.repository.PurchaseOrderRepository;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -53,7 +53,7 @@ public class EntityContextTest {
     }
 
     @Test
-    void reader_processor_entity의_영속성유지() throws Exception {
+    public void reader_processor_entity의_영속성유지() throws Exception {
         // given
         initPurchaseOrder();
 
