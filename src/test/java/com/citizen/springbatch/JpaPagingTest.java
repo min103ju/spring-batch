@@ -3,7 +3,7 @@ package com.citizen.springbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.citizen.springbatch.config.TestBatchConfig;
-import com.citizen.springbatch.jobs.JdbcPagingItemReaderJobConfiguration;
+import com.citizen.springbatch.jobs.JpaPagingItemReaderJobConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
@@ -21,14 +21,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("mariadb")
 @RunWith(SpringRunner.class)
 @SpringBatchTest
-@SpringBootTest(classes = {JdbcPagingItemReaderJobConfiguration.class, TestBatchConfig.class})
-public class JdbcPagingTest {
+@SpringBootTest(classes = {JpaPagingItemReaderJobConfiguration.class, TestBatchConfig.class})
+public class JpaPagingTest {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
-    public void JdbcPagingItemReader_테스트() throws Exception {
+    public void JpaPagingItemReader_테스트() throws Exception {
         // when
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 

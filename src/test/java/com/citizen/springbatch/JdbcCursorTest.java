@@ -28,7 +28,7 @@ public class JdbcCursorTest {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
-    public void JdbcCursorReader_테스트() throws Exception {
+    public void JdbcCursorItemReader_테스트() throws Exception {
         // when
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
