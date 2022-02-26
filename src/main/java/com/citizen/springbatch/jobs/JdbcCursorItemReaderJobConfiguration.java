@@ -28,7 +28,6 @@ public class JdbcCursorItemReaderJobConfiguration {
     private static final String JOB_NAME = "jdbcCursorItemReaderJob";
     private static final String STEP_NAME = "jdbcCursorItemReaderStep";
     private static final String READER_NAME = "jdbcCursorItemReader";
-    private static final String WRITER_NAME = "jdbcCursorItemWriter";
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -42,7 +41,7 @@ public class JdbcCursorItemReaderJobConfiguration {
     }
 
     @Bean
-    private Step jdbcCursorItemReaderStep() {
+    public Step jdbcCursorItemReaderStep() {
         return stepBuilderFactory.get(STEP_NAME)
             // 첫 번째는 Reader에서 반환할 타입, 두 번째는 Writer에 인자로 넘어올 타입
             // chunk() 메소드에서 size를 지정할 경우 reader & writer가 묶일 트랜잭션 범위이다.
@@ -52,11 +51,13 @@ public class JdbcCursorItemReaderJobConfiguration {
             .build();
     }
 
-    private JdbcCursorItemReader<Post> jdbcCursorItemReader() {
+    @Bean
+    public JdbcCursorItemReader<Post> jdbcCursorItemReader() {
 
         String sql = "SELECT id, title, content From Post";
 
         return new JdbcCursorItemReaderBuilder<Post>()
+            .verifyCursorPosition(false)
             .fetchSize(CHUNK_SIZE) // reader에서 조회할 데이터 양
             .dataSource(dataSource)
             // 쿼리 결과를 Java 인스턴스로 매핑하기 위한 Mapper
@@ -70,7 +71,7 @@ public class JdbcCursorItemReaderJobConfiguration {
             .build();
     }
 
-    private ItemWriter<Post> jdbcCursorItemWriter() {
+    public ItemWriter<Post> jdbcCursorItemWriter() {
         return list -> {
             for (Post post : list) {
                 log.info("Current post = {}", post);
