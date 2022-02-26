@@ -71,7 +71,7 @@ public class JdbcCursorItemReaderJobConfiguration {
             .build();
     }
 
-    public ItemWriter<Post> jdbcCursorItemWriter() {
+    private ItemWriter<Post> jdbcCursorItemWriter() {
         return list -> {
             for (Post post : list) {
                 log.info("Current post = {}", post);
