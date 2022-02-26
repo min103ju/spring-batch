@@ -65,6 +65,7 @@ public class JdbcPagingItemReaderJobConfiguration {
             .rowMapper(new BeanPropertyRowMapper<>(Post.class))
             // PagingItemReader에서는 PagingQueryProvider를 통해 쿼리를 생성한다.
             .queryProvider(createQueryProvider())
+            .name(READER_NAME)
             .build();
 
     }
