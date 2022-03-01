@@ -28,7 +28,7 @@ spring:
       names: ${job.name:NONE}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       use-new-id-generator-mappings: false
 
 # Program arguments로 넘어온 job.name 값이 넘어오면 해당 job만 실행하겠다는 설정값.

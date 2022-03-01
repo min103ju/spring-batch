@@ -53,10 +53,11 @@ public class JdbcBatchItemWriterJobConfiguration {
     @Bean
     public JdbcCursorItemReader<Post> jdbcBatchItemWriterReader() {
         return new JdbcCursorItemReaderBuilder<Post>()
+            .verifyCursorPosition(false)
             .fetchSize(CHUNK_SIZE)
             .dataSource(dataSource)
             .rowMapper(new BeanPropertyRowMapper<>(Post.class))
-            .sql("SELECT p FROM Post p")
+            .sql("SELECT id, title, content FROM post")
             .name(READER_NAME)
             .build();
     }

@@ -59,7 +59,6 @@ public class CustomItemWriterJobConfiguration {
             .pageSize(CHUNK_SIZE)
             .queryString("SELECT p FROM Post p")
             .build();
-
     }
 
     @Bean
@@ -67,10 +66,10 @@ public class CustomItemWriterJobConfiguration {
         return post -> new Post2(post.getId(), post.getTitle(), post.getContent());
     }
 
-    @Bean
     public ItemWriter<Post2> customItemWriter() {
         return items -> {
             for (Post2 post2 : items) {
+                System.out.println("Change Post -> Post2 : " + post2);
                 log.info("Change Post -> Post2 : {}", post2);
             }
         };

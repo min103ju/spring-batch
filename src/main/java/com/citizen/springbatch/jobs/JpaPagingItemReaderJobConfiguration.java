@@ -44,7 +44,7 @@ public class JpaPagingItemReaderJobConfiguration {
         return stepBuilderFactory.get(STEP_NAME)
             .<Post, Post>chunk(CHUNK_SIZE)
             .reader(jpaPagingItemReader())
-            .writer(jdbcPagingItemWriter())
+            .writer(jpaPagingItemWriter())
             .build();
     }
 
@@ -58,7 +58,7 @@ public class JpaPagingItemReaderJobConfiguration {
             .build();
     }
 
-    public ItemWriter<Post> jdbcPagingItemWriter() {
+    public ItemWriter<Post> jpaPagingItemWriter() {
         return list -> {
             for (Post post : list) {
                 log.info("Current post = {}", post);
