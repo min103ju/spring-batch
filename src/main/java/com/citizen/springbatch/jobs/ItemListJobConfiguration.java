@@ -2,6 +2,7 @@ package com.citizen.springbatch.jobs;
 
 import com.citizen.springbatch.domain.Post;
 import com.citizen.springbatch.domain.Post2;
+import com.citizen.springbatch.tasklet.ItemListProcessor;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +47,13 @@ public class ItemListJobConfiguration {
         return stepBuilderFactory.get(STEP_NAME)
             .<Post, List<Post2>>chunk(CHUNK_SIZE)
             .reader(itemListReader())
+            .processor(itemListProcessor())
             .writer(itemListWriter())
             .build();
+    }
+
+    public ItemProcessor<Post, List<Post2>> itemListProcessor() {
+        return new ItemListProcessor();
     }
 
     public JpaPagingItemReader<Post> itemListReader() {
@@ -58,7 +64,7 @@ public class ItemListJobConfiguration {
         return reader;
     }
 
-    public ItemWriter<List<Post2>> itemListWriter() {
+    public JpaItemWriter<List<Post2>> itemListWriter() {
         JpaItemWriter<List<Post2>> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
         return writer;
