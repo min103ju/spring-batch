@@ -29,7 +29,6 @@ public class JdbcBatchItemWriterJobConfiguration {
     private static final String JOB_NAME = "jdbcBatchItemWriterJob";
     private static final String STEP_NAME = "jdbcBatchItemWriterStep";
     private static final String READER_NAME = "jdbcBatchItemWriterReader";
-    private static final String WRITER_NAME = "jdbcBatchItemWriter";
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
