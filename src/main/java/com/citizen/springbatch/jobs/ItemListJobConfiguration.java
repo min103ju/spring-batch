@@ -3,6 +3,7 @@ package com.citizen.springbatch.jobs;
 import com.citizen.springbatch.domain.Post;
 import com.citizen.springbatch.domain.Post2;
 import com.citizen.springbatch.tasklet.ItemListProcessor;
+import com.citizen.springbatch.tasklet.JpaItemListWriter;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class ItemListJobConfiguration {
             .<Post, List<Post2>>chunk(CHUNK_SIZE)
             .reader(itemListReader())
             .processor(itemListProcessor())
-            .writer(itemListWriter())
+            .writer(itemListWriterList())
             .build();
     }
 
@@ -68,6 +69,13 @@ public class ItemListJobConfiguration {
         JpaItemWriter<List<Post2>> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
         return writer;
+    }
+
+    public JpaItemListWriter<Post2> itemListWriterList() {
+        JpaItemWriter<Post2> writer = new JpaItemWriter<>();
+        writer.setEntityManagerFactory(entityManagerFactory);
+
+        return new JpaItemListWriter<>(writer);
     }
 
 }
