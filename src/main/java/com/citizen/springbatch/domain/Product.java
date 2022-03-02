@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * author : citizen103
  */
+@ToString
 @Getter
 @NoArgsConstructor
 @Entity

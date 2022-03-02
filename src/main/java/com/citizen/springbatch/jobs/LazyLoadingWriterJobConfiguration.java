@@ -1,6 +1,5 @@
 package com.citizen.springbatch.jobs;
 
-import com.citizen.springbatch.domain.Post;
 import com.citizen.springbatch.domain.PurchaseOrder;
 import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +45,7 @@ public class LazyLoadingWriterJobConfiguration {
     @JobScope
     public Step lazyLoadingWriterStep() {
         return stepBuilderFactory.get(STEP_NAME)
-            .<PurchaseOrder, Post>chunk(CHUNK_SIZE)
+            .<PurchaseOrder, PurchaseOrder>chunk(CHUNK_SIZE)
             .reader(lazyLoadingWriterReader())
             .writer(lazyLoadingWriter())
             .build();
@@ -62,11 +61,11 @@ public class LazyLoadingWriterJobConfiguration {
             .build();
     }
 
-    private ItemWriter<Post> lazyLoadingWriter() {
+    private ItemWriter<PurchaseOrder> lazyLoadingWriter() {
         return items -> {
             log.info(">>>>>>>>> Items : {}", items);
-            for (Post post : items) {
-                log.info(">>>>>>>>> Post : {}", post);
+            for (PurchaseOrder purchaseOrder : items) {
+                log.info(">>>>>>>>> PurchaseOrder : {}", purchaseOrder);
             }
         };
     }
